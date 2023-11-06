@@ -1,4 +1,4 @@
-#include "bulk_gtest.h"
+#include "async_gtest.h"
 
 int main(int argc, char** argv) {
     system("chcp 1251>null");
