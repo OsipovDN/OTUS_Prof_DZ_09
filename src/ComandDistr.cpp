@@ -73,4 +73,3 @@ std::string ComandDistr::getNameFile() {
 	std::string name = "bulk" + std::to_string(time) + ".log";
 	return name;
 }
-};
