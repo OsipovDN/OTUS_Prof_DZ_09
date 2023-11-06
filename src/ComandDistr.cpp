@@ -1,4 +1,8 @@
-#include "ComandDistr"
+#include <iostream>
+#include <string>
+#include <algorithm>
+
+#include "ComandDistr.h"
 
 void ComandDistr::run() {
 	std::string cmd;

@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
+#include <memory>
 #include <algorithm>
 #include "ComandDistr.h"
+#include "OutToStream.h"
 
 bool isDig(char* arg) {
 	std::string num = arg;
@@ -20,10 +22,19 @@ int main(int argc, char* argv[])
 		std::cout << "Not a val" << std::endl;
 		exit(1);
 	}
-
 	int count = atoi(argv[1]);
-	ComandDistr CmdDis(count);
-	CmdDis.run();
+
+	ComandDistr *CmdDis= new ComandDistr(count);
+	auto save_to_file = new ToFile(CmdDis);
+	auto save_to_cout = new ToCOut(CmdDis);
+	
+
+	CmdDis->run();
+
+	delete CmdDis;
+	delete save_to_file;
+	delete save_to_cout;
+
 
 	return 0;
 }

@@ -5,7 +5,7 @@
 #include <chrono>
 #include <fstream>
 
-#include "Interface.h"
+#include "PubSub.h"
 
 using StaticPullBlock = std::vector<std::string>;
 using DynamicPullBlock = std::deque<std::string>;
@@ -20,29 +20,27 @@ private:
 	bool is_open;
 
 public:
-	explicit ComandDistr(int& count) :scope_block(0), is_open(false) {
+	explicit ComandDistr(int count) :scope_block(0), is_open(false) {
 		st_pl_cmd.reserve(count);
 	}
-	void attach(IObserver* obj)override {
+	void attach(IObserver *obj)override {
 		if (std::find(obs.cbegin(), obs.cend(), obj) == obs.cend())
 			obs.push_back(obj);
 	}
-	void detach(IObserver* obj) override {
+	void detach(IObserver *obj) override {
 		obs.remove(obj);
 	}
 	void notify() {
 		for (auto object : obs)
 			object->update();
 	}
-	~ComandDistr()override {};
-
+	~ComandDistr(){};
+	
 	void run();
-
 	bool isScope(const std::string& str);
-
 	void addStBlock(const std::string& str);
-
 	void addDynBlock(DynamicPullBlock& obj);
+	std::string getNameFile();
 
 	template <typename T>
 	bool saveBlock(T obj) {
@@ -67,5 +65,5 @@ public:
 		stream << *(obj.cend() - 1) << std::endl;
 	}
 
-	std::string getNameFile();
+	
 };

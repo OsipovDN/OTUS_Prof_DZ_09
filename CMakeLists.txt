@@ -9,8 +9,8 @@ configure_file(version.h.in version.h)
 
 add_executable (
     async
-    bulk.cpp
-    Interface.cpp
+    async.cpp
+    src/ComandDistr.cpp
 )
 add_executable(async_gtest test/async_gtest.cpp)
 
