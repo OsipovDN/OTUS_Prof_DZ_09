@@ -24,16 +24,18 @@ int main(int argc, char* argv[])
 	}
 	int count = atoi(argv[1]);
 
-	ComandDistr *CmdDis= new ComandDistr(count);
+	auto CmdDis = new ComandDistr(count);
 	auto save_to_file = new ToFile(CmdDis);
 	auto save_to_cout = new ToCOut(CmdDis);
-	
+
 
 	CmdDis->run();
 
-	delete CmdDis;
+	
 	delete save_to_file;
 	delete save_to_cout;
+
+	delete CmdDis;
 
 
 	return 0;

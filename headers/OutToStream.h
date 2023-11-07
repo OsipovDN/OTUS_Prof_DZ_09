@@ -1,34 +1,36 @@
 #pragma once
 #include<memory>
 
-#include"PubSub.h"
+#include "IObserver.h"
 
-class ToFile :public IObserver {
+class ToFile :public IObserver{
 private:
-	ISubject *distr;
+	ISubject* _subject;
 public:
-	ToFile(ISubject *obj):distr(obj){
-		this->distr->attach(this);
+	ToFile(ISubject *obj){
+		_subject = obj;
+		this->_subject->attach(this);
 	};
 	void update()override {
 	
 	};
 	~ToFile() {
-		this->distr->detach(this);
+		this->_subject->detach(this);
 	};
 
 };
 
-class ToCOut :public IObserver{
+class ToCOut :public IObserver {
 private:
-	ISubject *distr;
+	ISubject* _subject;
 public:
-	ToCOut(ISubject *obj) :distr(obj) {
-		this->distr->attach(this);
+	ToCOut(ISubject *obj) {
+		_subject = obj;
+		this->_subject->attach(this);
 	};
 	void update()override {};
 	~ToCOut() {
-		this->distr->detach(this);
+		this->_subject->detach(this);
 	};
 
 };
