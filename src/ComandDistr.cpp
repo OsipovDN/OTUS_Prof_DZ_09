@@ -4,6 +4,36 @@
 
 #include "ComandDistr.h"
 
+//void ComandDistr::run() {
+//	std::string cmd;
+//	DynamicPullBlock temp;
+//	while (std::getline(std::cin, cmd)) {
+//		if (isScope(cmd)) {
+//			if (st_pl_cmd.size() != 0 && is_open) {
+//				saveBlock(st_pl_cmd);
+//				printBlockToStream(std::cout, st_pl_cmd);
+//				st_pl_cmd.clear();
+//			}
+//			else if (scope_block == 0 && !is_open) {
+//				addDynBlock(temp);
+//				saveBlock(dn_pl_cmd);
+//				printBlockToStream(std::cout, dn_pl_cmd);
+//				dn_pl_cmd.clear();
+//			}
+//			continue;
+//		}
+//		if (scope_block == 0 && dn_pl_cmd.size() == 0)
+//			addStBlock(cmd);
+//		else
+//			temp.emplace_back(cmd);
+//	}
+//	if (st_pl_cmd.size() != 0) {
+//		saveBlock(st_pl_cmd);
+//		printBlockToStream(std::cout, st_pl_cmd);
+//		st_pl_cmd.clear();
+//	}
+//}
+
 void ComandDistr::run() {
 	std::string cmd;
 	DynamicPullBlock temp;

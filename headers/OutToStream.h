@@ -6,14 +6,17 @@
 class ToFile :public IObserver{
 private:
 	ISubject* _subject;
+	
+
 public:
 	ToFile(ISubject *obj){
 		_subject = obj;
 		this->_subject->attach(this);
 	};
+
 	void update()override {
-	
-	};
+		
+	}
 	~ToFile() {
 		this->_subject->detach(this);
 	};
