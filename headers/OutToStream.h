@@ -3,37 +3,34 @@
 
 #include "IObserver.h"
 
-class ToFile :public IObserver{
+
+class ToFile :public IObserver, std::enable_shared_from_this<ToFile>{
 private:
-	ISubject* _subject;
-	
+	std::shared_ptr<ComandDistr> _subject;	
 
 public:
-	ToFile(ISubject *obj){
-		_subject = obj;
-		this->_subject->attach(this);
+	ToFile(ComandDistr&obj){
+		_subject = std::make_shared<ComandDistr>(obj);
+		this->_subject->attach(shared_from_this());
 	};
 
 	void update()override {
 		
 	}
 	~ToFile() {
-		this->_subject->detach(this);
 	};
 
 };
 
-class ToCOut :public IObserver {
+class ToCOut :public IObserver, std::enable_shared_from_this<ToCOut> {
 private:
-	ISubject* _subject;
+	std::shared_ptr<ComandDistr> _subject;
 public:
-	ToCOut(ISubject *obj) {
-		_subject = obj;
-		this->_subject->attach(this);
+	ToCOut(ComandDistr& obj) {
+		_subject = std::make_shared<ComandDistr>(obj);
+		this->_subject->attach(shared_from_this());
 	};
 	void update()override {};
-	~ToCOut() {
-		this->_subject->detach(this);
-	};
+	~ToCOut() {};
 
 };
