@@ -11,7 +11,6 @@ public:
 	};
 	void update()override {};
 	~ToFile() {};
-
 };
 
 class ToCOut :public IObserver, std::enable_shared_from_this<ToCOut> {
@@ -21,5 +20,4 @@ public:
 	};
 	void update()override {};
 	~ToCOut() {};
-
 };
