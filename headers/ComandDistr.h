@@ -3,6 +3,7 @@
 #include <list>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "IObserver.h"
 #include "ISubject.h"
@@ -23,13 +24,19 @@ private:
 	void addDynBlock(PullBlock& obj);
 
 public:
-	explicit ComandDistr(int count);
-	void run();
-
+	//ISubject
 	void attach(std::shared_ptr<IObserver> obj) override;
 	void detach(std::shared_ptr<IObserver> obj) override;
 	void notify(std::vector<std::string>& block) override;
+	//ISubject
+
+	explicit ComandDistr(int count);
 	~ComandDistr() {};
+	void run();
+
+	
+
+	
 
 	
 	

@@ -1,5 +1,17 @@
 #include "ComandDistr.h"
 
+void ComandDistr::attach(std::shared_ptr<IObserver> obj) {
+	if (std::find(_observers.cbegin(), _observers.cend(), obj) == _observers.cend())
+		_observers.emplace_back(obj);
+}
+void ComandDistr::detach(std::shared_ptr<IObserver> obj) {
+	_observers.remove(obj);
+}
+void ComandDistr::notify(std::vector<std::string>& block) {
+	for (auto object : _observers)
+		object->update(block);
+}
+
 ComandDistr::ComandDistr(int count) :scope_block(0), is_open(false) {
 	st_pl_cmd.reserve(count);
 }
@@ -62,14 +74,3 @@ void ComandDistr::run() {
 	}
 }
 
-void ComandDistr::attach(std::shared_ptr<IObserver> obj) {
-	if (std::find(_observers.cbegin(), _observers.cend(), obj) == _observers.cend())
-		_observers.emplace_back(obj);
-}
-void ComandDistr::detach(std::shared_ptr<IObserver> obj) {
-	_observers.remove(obj);
-}
-void ComandDistr::notify(std::vector<std::string>& block) {
-	for (auto object : _observers)
-		object->update(block);
-}
