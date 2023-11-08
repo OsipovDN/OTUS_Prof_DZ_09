@@ -3,6 +3,7 @@
 #include <list>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "IObserver.h"
 #include "ISubject.h"
