@@ -11,6 +11,7 @@ add_executable (
     async
     async.cpp
     src/ComandDistr.cpp
+    src/Observers.cpp
 )
 add_executable(async_gtest test/async_gtest.cpp)
 

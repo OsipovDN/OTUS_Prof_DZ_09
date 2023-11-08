@@ -3,7 +3,7 @@
 #include <memory>
 #include <algorithm>
 #include "ComandDistr.h"
-#include "OutToStream.h"
+#include "Observers.h"
 
 bool isDig(char* arg) {
 	std::string num = arg;
