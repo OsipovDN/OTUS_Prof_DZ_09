@@ -13,7 +13,6 @@ bool isDig(char* arg) {
 
 int main(int argc, char* argv[])
 {
-
 	if (argc != 2) {
 		std::cout << "Incorrect argument input" << std::endl;
 		exit(1);
