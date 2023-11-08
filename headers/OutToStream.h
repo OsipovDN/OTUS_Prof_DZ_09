@@ -4,14 +4,13 @@
 #include "IObserver.h"
 
 
-class ToFile :public IObserver, std::enable_shared_from_this<ToFile>{
+class ToFile :public IObserver, std::enable_shared_from_this<IObserver>{
 private:
-	std::shared_ptr<ComandDistr> _subject;	
+	std::shared_ptr<ComandDistr> _subject;
 
 public:
-	ToFile(ComandDistr&obj){
+	ToFile(ComandDistr &obj){
 		_subject = std::make_shared<ComandDistr>(obj);
-		this->_subject->attach(shared_from_this());
 	};
 
 	void update()override {
@@ -22,13 +21,12 @@ public:
 
 };
 
-class ToCOut :public IObserver, std::enable_shared_from_this<ToCOut> {
+class ToCOut :public IObserver, std::enable_shared_from_this<IObserver> {
 private:
 	std::shared_ptr<ComandDistr> _subject;
 public:
-	ToCOut(ComandDistr& obj) {
+	ToCOut(ComandDistr &obj) {
 		_subject = std::make_shared<ComandDistr>(obj);
-		this->_subject->attach(shared_from_this());
 	};
 	void update()override {};
 	~ToCOut() {};

@@ -6,12 +6,13 @@
 #include <fstream>
 
 #include "IObserver.h"
+#include "ISubject.h"
 
 using StaticPullBlock = std::vector<std::string>;
 using DynamicPullBlock = std::deque<std::string>;
 
 
-class ComandDistr {
+class ComandDistr: public ISubject {
 private:
 	StaticPullBlock st_pl_cmd;
 	DynamicPullBlock dn_pl_cmd;
@@ -23,14 +24,14 @@ public:
 	explicit ComandDistr(int count) :scope_block(0), is_open(false) {
 		st_pl_cmd.reserve(count);
 	}
-	void attach(std::shared_ptr<IObserver> obj){
+	void attach(std::shared_ptr<IObserver> obj)override{
 		if (std::find(_observers.cbegin(), _observers.cend(), obj) == _observers.cend())
 			_observers.emplace_back(obj);
 	}
-	void detach(std::shared_ptr<IObserver> obj) {
+	void detach(std::shared_ptr<IObserver> obj)override {
 		_observers.remove(obj);
 	}
-	void notify() {
+	void notify()override {
 		for (auto object : _observers) {
 			object->update();
 		}
