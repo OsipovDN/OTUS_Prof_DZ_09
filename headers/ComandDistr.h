@@ -5,30 +5,29 @@
 #include <chrono>
 #include <fstream>
 
-#include "ISubject.h"
 #include "IObserver.h"
 
 using StaticPullBlock = std::vector<std::string>;
 using DynamicPullBlock = std::deque<std::string>;
 
 
-class ComandDistr: public ISubject {
+class ComandDistr {
 private:
 	StaticPullBlock st_pl_cmd;
 	DynamicPullBlock dn_pl_cmd;
 	size_t scope_block;
 	bool is_open;
-	std::list<IObserver*> _observers;
+	std::list<std::shared_ptr<IObserver>> _observers;
 
 public:
 	explicit ComandDistr(int count) :scope_block(0), is_open(false) {
 		st_pl_cmd.reserve(count);
 	}
-	void attach(IObserver* obj)override {
+	void attach(std::shared_ptr<IObserver> obj){
 		if (std::find(_observers.cbegin(), _observers.cend(), obj) == _observers.cend())
 			_observers.emplace_back(obj);
 	}
-	void detach(IObserver* obj) override {
+	void detach(std::shared_ptr<IObserver> obj) {
 		_observers.remove(obj);
 	}
 	void notify() {
