@@ -27,9 +27,7 @@ int main(int argc, char* argv[])
 	auto save_to_file = std::make_shared <ToFile>(CmdDis);
 	auto save_to_cout = std::make_shared <ToCOut>(CmdDis);
 
-
 	CmdDis.run();
-
 
 	return 0;
 }
