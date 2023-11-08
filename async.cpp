@@ -13,7 +13,6 @@ bool isDig(char* arg) {
 
 int main(int argc, char* argv[])
 {
-
 	if (argc != 2) {
 		std::cout << "Incorrect argument input" << std::endl;
 		exit(1);
@@ -24,19 +23,11 @@ int main(int argc, char* argv[])
 	}
 	int count = atoi(argv[1]);
 
-	auto CmdDis = new ComandDistr(count);
-	auto save_to_file = new ToFile(CmdDis);
-	auto save_to_cout = new ToCOut(CmdDis);
+	ComandDistr CmdDis(count);
+	auto save_to_file = std::make_shared <ToFile>(CmdDis);
+	auto save_to_cout = std::make_shared <ToCOut>(CmdDis);
 
-
-	CmdDis->run();
-
-	
-	delete save_to_file;
-	delete save_to_cout;
-
-	delete CmdDis;
-
+	CmdDis.run();
 
 	return 0;
 }
