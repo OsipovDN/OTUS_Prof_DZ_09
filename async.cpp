@@ -23,15 +23,14 @@ int main(int argc, char* argv[])
 	}
 	int count = atoi(argv[1]);
 
-	ComandDistr CmdDis(count);
+	auto CmdDis= std::make_shared<ComandDistr >(count);
+	auto save_to_file = std::make_shared <ToFile>(CmdDis);
+	auto save_to_cout = std::make_shared <ToCOut>(CmdDis);
 
-	auto save_to_file = std::make_shared <ToFile>();
-	auto save_to_cout = std::make_shared <ToCOut>();
+	/*CmdDis.attach(save_to_file);
+	CmdDis.attach(save_to_cout);*/
 
-	CmdDis.attach(save_to_file);
-	CmdDis.attach(save_to_cout);
-
-	CmdDis.run();
+	CmdDis->run();
 
 
 	return 0;
