@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 	}
 	int count = atoi(argv[1]);
 
-	auto CmdDis = new ComandDistr(count);
+	auto CmdDis = std::make_shared <ComandDistr>(count);
 	auto save_to_file = new ToFile(CmdDis);
 	auto save_to_cout = new ToCOut(CmdDis);
 
@@ -35,7 +35,6 @@ int main(int argc, char* argv[])
 	delete save_to_file;
 	delete save_to_cout;
 
-	delete CmdDis;
 
 
 	return 0;

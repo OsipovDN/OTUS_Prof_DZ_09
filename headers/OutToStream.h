@@ -5,32 +5,32 @@
 
 class ToFile :public IObserver{
 private:
-	ISubject* _subject;
+	std::shared_ptr<ISubject> _subject;
 public:
-	ToFile(ISubject *obj){
+	ToFile(std::shared_ptr<ISubject> obj){
 		_subject = obj;
-		this->_subject->attach(this);
+		this->_subject->attach(shared_from_this());
 	};
 	void update()override {
 	
 	};
 	~ToFile() {
-		this->_subject->detach(this);
+		this->_subject->detach(shared_from_this());
 	};
 
 };
 
 class ToCOut :public IObserver {
 private:
-	ISubject* _subject;
+	std::shared_ptr<ISubject> _subject;
 public:
-	ToCOut(ISubject *obj) {
+	ToCOut(std::shared_ptr<ISubject> obj) {
 		_subject = obj;
-		this->_subject->attach(this);
+		this->_subject->attach(shared_from_this());
 	};
 	void update()override {};
 	~ToCOut() {
-		this->_subject->detach(this);
+		this->_subject->detach(shared_from_this());
 	};
 
 };
