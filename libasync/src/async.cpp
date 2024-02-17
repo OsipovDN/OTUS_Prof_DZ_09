@@ -10,16 +10,21 @@ namespace async {
         return std::make_unique<lib::ComandDistr>(bulk).release();
     }
 
-    void receive(handle_t handle, const char* data, std::size_t size) {
+    void receive(handle_t handler, const char* data, std::size_t size) {
+
+        auto controller = static_cast<lib::ComandDistr*>(handler);
+        if (handler == nullptr)
+            return;
 
         std::istringstream stream (std::string(data,size));
         std::string temp;
         while (stream >> temp)
-            handle->addComand(temp);
+            controller->addComand(temp);
 
     }
 
-    void disconnect(handle_t handle) {
+    void disconnect(handle_t ) {
+
     }
 
 }
