@@ -13,12 +13,12 @@ configure_file(
         version.h.in 
         ${CMAKE_CURRENT_BINARY_DIR}/version.h
 )
-add_executable(async main.cpp)
+add_executable(${PROJECT_NAME} main.cpp)
 add_executable(async_gtest test/async_gtest.cpp)
 
 
 target_include_directories(
-    async PRIVATE 
+    ${PROJECT_NAME} PRIVATE 
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
@@ -44,23 +44,23 @@ target_link_libraries(
 )
 
 target_include_directories(
-    async PRIVATE
+    ${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/libasync
 )
 
 target_link_libraries(
-    async PRIVATE
+    ${PROJECT_NAME} PRIVATE
     libasync
 )
 
-set_target_properties(async PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
 	CXX_STANDARD 17
 	CXX_STANDARD_REQUIRED ON
 )
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR
     CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(async PRIVATE 
+    target_compile_options(${PROJECT_NAME} PRIVATE 
         -g
         -Wall
         -Wextra
@@ -69,7 +69,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR
     )
 
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(async PRIVATE
+    target_compile_options(${PROJECT_NAME} PRIVATE
         /EHsc
         /W4
         /WX

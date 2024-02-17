@@ -10,35 +10,37 @@
 
 using PullBlock = std::vector<std::string>;
 
+namespace lib
+{
+	class ComandDistr : public ISubject {
+	private:
+		PullBlock st_pl_cmd;
+		PullBlock dn_pl_cmd;
+		size_t scope_block;
+		bool is_open;
+		std::list<std::shared_ptr<IObserver>> _observers;
 
-class ComandDistr : public ISubject {
-private:
-	PullBlock st_pl_cmd;
-	PullBlock dn_pl_cmd;
-	size_t scope_block;
-	bool is_open;
-	std::list<std::shared_ptr<IObserver>> _observers;
+		bool isScope(const std::string& str);
+		void addStBlock(const std::string& str);
+		void addDynBlock(PullBlock& obj);
 
-	bool isScope(const std::string& str);
-	void addStBlock(const std::string& str);
-	void addDynBlock(PullBlock& obj);
+	public:
+		//ISubject
+		void attach(std::shared_ptr<IObserver> obj) override;
+		void detach(std::shared_ptr<IObserver> obj) override;
+		void notify(std::vector<std::string>& block) override;
+		//ISubject
 
-public:
-	//ISubject
-	void attach(std::shared_ptr<IObserver> obj) override;
-	void detach(std::shared_ptr<IObserver> obj) override;
-	void notify(std::vector<std::string>& block) override;
-	//ISubject
+		explicit ComandDistr(std::size_t count);
+		~ComandDistr() {};
+		void addComand(std::string cmd);
 
-	explicit ComandDistr(int count);
-	~ComandDistr() {};
-	void run();
 
-	
 
-	
 
-	
-	
 
-};
+
+
+
+	};
+}

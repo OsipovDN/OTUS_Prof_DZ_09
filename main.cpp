@@ -2,6 +2,7 @@
 #include <string>
 #include <thread>
 #include <algorithm>
+#include <libasync.h>
 
 bool isDig(char* arg) {
 	std::string num = arg;
@@ -12,16 +13,17 @@ bool isDig(char* arg) {
 
 int main(int argc, char* argv[])
 {
-	if (argc != 2) {
-		std::cout << "Incorrect argument input" << std::endl;
-		exit(1);
+	if (argc != 2)
+		std::cout << "Don't input argument" << std::endl;
+	else 
+	{
+		if (!isDig(argv[1])) {
+			std::cout << "Not a val" << std::endl;
+			exit(1);
+		}
+		int count = atoi(argv[1]);
 	}
-	if (!isDig(argv[1])) {
-		std::cout << "Not a val" << std::endl;
-		exit(1);
-	}
-	int count = atoi(argv[1]);
-	/*
+
 	std::size_t bulk = 5;
 	auto h = async::connect(bulk);
 	auto h2 = async::connect(bulk);
@@ -31,6 +33,6 @@ int main(int argc, char* argv[])
 	async::receive(h, "b\nc\nd\n}\n89\n", 11);
 	async::disconnect(h);
 	async::disconnect(h2);
-	*/
+
 	return 0;
 }
