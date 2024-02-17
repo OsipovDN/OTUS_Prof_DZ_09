@@ -1,15 +1,14 @@
 #include <iostream>
 #include <string>
-#include <memory>
+#include <thread>
 #include <algorithm>
-#include "ComandDistr.h"
-#include "Observers.h"
 
 bool isDig(char* arg) {
 	std::string num = arg;
 	auto isdig = [](char ch) {return std::isdigit(ch); };
 	return std::all_of(num.cbegin(), num.cend(), isdig);
 }
+
 
 int main(int argc, char* argv[])
 {
@@ -22,17 +21,16 @@ int main(int argc, char* argv[])
 		exit(1);
 	}
 	int count = atoi(argv[1]);
-
-	ComandDistr CmdDis(count);
-
-	auto save_to_file = std::make_shared <ToFile>();
-	auto save_to_cout = std::make_shared <ToCOut>();
-
-	CmdDis.attach(save_to_file);
-	CmdDis.attach(save_to_cout);
-
-	CmdDis.run();
-
-
+	/*
+	std::size_t bulk = 5;
+	auto h = async::connect(bulk);
+	auto h2 = async::connect(bulk);
+	async::receive(h, "1", 1);
+	async::receive(h2, "1\n", 2);
+	async::receive(h, "\n2\n3\n4\n5\n6\n{\na\n", 15);
+	async::receive(h, "b\nc\nd\n}\n89\n", 11);
+	async::disconnect(h);
+	async::disconnect(h2);
+	*/
 	return 0;
 }

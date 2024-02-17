@@ -4,24 +4,22 @@ set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
 project (async VERSION ${PROJECT_VESRION})
-find_package(GTest)
-configure_file(version.h.in version.h)
 
-add_executable (
-    async
-    async.cpp
-    src/ComandDistr.cpp
-    src/Observers.cpp
+add_subdirectory (libasync)
+
+find_package(GTest)
+
+configure_file(
+        version.h.in 
+        ${CMAKE_CURRENT_BINARY_DIR}/version.h
 )
+add_executable(async main.cpp)
 add_executable(async_gtest test/async_gtest.cpp)
+
 
 target_include_directories(
     async PRIVATE 
     ${CMAKE_CURRENT_BINARY_DIR}
-)
-target_include_directories(
-    async PRIVATE 
-    ${CMAKE_CURRENT_SOURCE_DIR}/headers
 )
 
 target_include_directories(
@@ -44,6 +42,17 @@ target_link_libraries(
     async_gtest PRIVATE
     ${GTEST_BOTH_LIBRARIES}
 )
+
+target_include_directories(
+    async PRIVATE
+    ${CMAKE_SOURCE_DIR}/libasync
+)
+
+target_link_libraries(
+    async PRIVATE
+    libasync
+)
+
 set_target_properties(async PROPERTIES
 	CXX_STANDARD 17
 	CXX_STANDARD_REQUIRED ON
