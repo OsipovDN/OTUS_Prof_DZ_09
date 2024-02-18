@@ -31,7 +31,7 @@ namespace Controller
 
 	public:
 
-		ComandController(Sender::PackageSender* q,std::size_t count);
+		ComandController(std::unique_ptr<Sender::PackageSender> q,std::size_t count);
 		~ComandController() {};
 		void addComand(std::string cmd);
 

@@ -2,9 +2,9 @@
 
 namespace Controller
 {
-	ComandController::ComandController(Sender::PackageSender *q, std::size_t count) :scope_block(0), is_open(false)
+	ComandController::ComandController(std::unique_ptr<Sender::PackageSender> q, std::size_t count) :scope_block(0), is_open(false)
 	{
-		_msgQueue.reset(q);
+		_msgQueue = std::move(q);
 		st_pl_cmd.reserve(count);
 	}
 
