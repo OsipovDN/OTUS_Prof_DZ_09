@@ -22,12 +22,7 @@ int main(int argc, char* argv[])
 		bulk = 5;
 		std::cout << "The number of commands is not specified by the user.By default, the number of commands is "<< bulk << std::endl;
 	}
-	else if (argc >= 2)
-	{
-		std::cout << "Something is wrong" << std::endl;
-		exit(1);
-	}
-	else
+	else if (argc == 2)
 	{
 		if (!isDig(argv[1]))
 		{
@@ -35,6 +30,11 @@ int main(int argc, char* argv[])
 			exit(1);
 		}
 		bulk = atoi(argv[1]);
+	}
+	else
+	{
+		std::cout << "Something is wrong" << std::endl;
+		exit(1);
 	}
 
 	auto h = async::connect(bulk);

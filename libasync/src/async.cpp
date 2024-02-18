@@ -1,5 +1,6 @@
 #include <sstream>
 #include <memory>
+
 #include "ComandController.h"
 #include "Observers.h"
 #include "async.h"
@@ -7,16 +8,19 @@
 namespace async {
 
 	handle_t connect(std::size_t bulk) {
-		auto temp = new libComand::ComandController(bulk);
-		temp->attach(std::make_unique<ToFile>());
-		temp->attach(std::make_unique<ToFile>());
-		temp->attach(std::make_unique<ToCOut>());
+		Sender::PackageSender* msgSender=new Sender::PackageSender();
+		msgSender->attach(std::make_unique<ToFile>());
+		msgSender->attach(std::make_unique<ToFile>());
+		msgSender->attach(std::make_unique<ToCOut>());
+
+		auto temp = new Controller::ComandController(msgSender, bulk);
+
 		return std::move(temp);
 	}
 
 	void receive(handle_t handler, const char* data, std::size_t size) {
 
-		auto controller = static_cast<libComand::ComandController*>(handler);
+		auto controller = static_cast<Controller::ComandController*>(handler);
 		if (handler == nullptr)
 			return;
 
@@ -29,11 +33,10 @@ namespace async {
 	}
 
 	void disconnect(handle_t handler) {
-		auto controller = static_cast<libComand::ComandController*>(handler);
-		controller->detachAll();
+		receive(handler, "EOF", 1);
 		if (handler != nullptr)
 		{
-			delete controller;
+			delete handler;
 		}
 	}
 

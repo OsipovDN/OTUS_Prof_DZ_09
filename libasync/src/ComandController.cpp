@@ -1,30 +1,10 @@
 #include "ComandController.h"
 
-namespace libComand
+namespace Controller
 {
-	void ComandController::attach(std::unique_ptr<IObserver> obj)
+	ComandController::ComandController(Sender::PackageSender *q, std::size_t count) :scope_block(0), is_open(false)
 	{
-		if (std::find(_observers.cbegin(), _observers.cend(), obj) == _observers.cend())
-			_observers.emplace_back(obj.release());
-	}
-	void ComandController::detach(std::unique_ptr<IObserver> obj)
-	{
-		_observers.remove(obj);
-	}
-
-	void ComandController::detachAll()
-	{
-		if (!_observers.empty())
-			_observers.clear();
-	}
-	void ComandController::notify(std::vector<std::string>& block)
-	{
-		for (auto& object : _observers)
-			object->update(block);
-	}
-
-	ComandController::ComandController(std::size_t count) :scope_block(0), is_open(false)
-	{
+		_msgQueue.reset(q);
 		st_pl_cmd.reserve(count);
 	}
 
@@ -50,7 +30,7 @@ namespace libComand
 			st_pl_cmd.emplace_back(str);
 
 		if (st_pl_cmd.size() == st_pl_cmd.capacity()) {
-			notify(st_pl_cmd);
+			_msgQueue->notify(st_pl_cmd);
 			st_pl_cmd.clear();
 		}
 	}
@@ -69,13 +49,13 @@ namespace libComand
 		{
 			if (st_pl_cmd.size() != 0 && is_open)
 			{
-				notify(st_pl_cmd);
+				_msgQueue->putMsg(st_pl_cmd);
 				st_pl_cmd.clear();
 			}
 			else if (scope_block == 0 && !is_open)
 			{
 				addDynBlock(temp);
-				notify(dn_pl_cmd);
+				_msgQueue->putMsg(dn_pl_cmd);
 				dn_pl_cmd.clear();
 			}
 		}
@@ -85,7 +65,7 @@ namespace libComand
 			temp.emplace_back(cmd);
 		if (st_pl_cmd.size() != 0)
 		{
-			notify(st_pl_cmd);
+			_msgQueue->putMsg(st_pl_cmd);
 			st_pl_cmd.clear();
 		}
 
