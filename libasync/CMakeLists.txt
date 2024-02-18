@@ -9,9 +9,9 @@ configure_file(version.h.in  ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
 add_library (${PROJECT_NAME} STATIC
     src/async.cpp
-    src/ComandDistr.cpp
+    src/ComandController.cpp
     src/Observers.cpp
-)
+  )
 
 target_include_directories(
     ${PROJECT_NAME} PRIVATE 

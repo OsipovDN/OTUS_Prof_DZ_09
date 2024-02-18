@@ -3,6 +3,7 @@
 #include <list>
 #include <string>
 #include <vector>
+#include <memory>
 #include <algorithm>
 
 #include "IObserver.h"
@@ -10,15 +11,15 @@
 
 using PullBlock = std::vector<std::string>;
 
-namespace lib
+namespace libComand
 {
-	class ComandDistr : public ISubject {
+	class ComandController : public ISubject {
 	private:
 		PullBlock st_pl_cmd;
 		PullBlock dn_pl_cmd;
 		size_t scope_block;
 		bool is_open;
-		std::list<std::shared_ptr<IObserver>> _observers;
+		std::list<std::unique_ptr<IObserver>> _observers;
 
 		bool isScope(const std::string& str);
 		void addStBlock(const std::string& str);
@@ -26,13 +27,14 @@ namespace lib
 
 	public:
 		//ISubject
-		void attach(std::shared_ptr<IObserver> obj) override;
-		void detach(std::shared_ptr<IObserver> obj) override;
+		void attach(std::unique_ptr<IObserver> obj) override;
+		void detach(std::unique_ptr<IObserver> obj) override;
+		void detachAll() override;
 		void notify(std::vector<std::string>& block) override;
 		//ISubject
 
-		explicit ComandDistr(std::size_t count);
-		~ComandDistr() {};
+		explicit ComandController(std::size_t count);
+		~ComandController() {};
 		void addComand(std::string cmd);
 
 

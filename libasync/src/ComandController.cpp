@@ -1,24 +1,35 @@
-#include "ComandDistr.h"
+#include "ComandController.h"
 
-namespace lib
+namespace libComand
 {
-	void ComandDistr::attach(std::shared_ptr<IObserver> obj) {
+	void ComandController::attach(std::unique_ptr<IObserver> obj)
+	{
 		if (std::find(_observers.cbegin(), _observers.cend(), obj) == _observers.cend())
-			_observers.emplace_back(obj);
+			_observers.emplace_back(obj.release());
 	}
-	void ComandDistr::detach(std::shared_ptr<IObserver> obj) {
+	void ComandController::detach(std::unique_ptr<IObserver> obj)
+	{
 		_observers.remove(obj);
 	}
-	void ComandDistr::notify(std::vector<std::string>& block) {
-		for (auto object : _observers)
+
+	void ComandController::detachAll()
+	{
+		if (!_observers.empty())
+			_observers.clear();
+	}
+	void ComandController::notify(std::vector<std::string>& block)
+	{
+		for (auto& object : _observers)
 			object->update(block);
 	}
 
-	ComandDistr::ComandDistr(std::size_t count) :scope_block(0), is_open(false) {
+	ComandController::ComandController(std::size_t count) :scope_block(0), is_open(false)
+	{
 		st_pl_cmd.reserve(count);
 	}
 
-	bool ComandDistr::isScope(const std::string& str) {
+	bool ComandController::isScope(const std::string& str)
+	{
 		if (str == "{") {
 			is_open = !is_open;
 			scope_block++;
@@ -33,7 +44,8 @@ namespace lib
 			return false;
 	}
 
-	void ComandDistr::addStBlock(const std::string& str) {
+	void ComandController::addStBlock(const std::string& str)
+	{
 		if (st_pl_cmd.size() != st_pl_cmd.capacity())
 			st_pl_cmd.emplace_back(str);
 
@@ -43,13 +55,15 @@ namespace lib
 		}
 	}
 
-	void ComandDistr::addDynBlock(PullBlock& obj) {
+	void ComandController::addDynBlock(PullBlock& obj)
+	{
 		for (const auto& it : obj)
 			dn_pl_cmd.emplace_back(it);
 		obj.clear();
 	}
 
-	void ComandDistr::addComand(std::string cmd) {
+	void ComandController::addComand(std::string cmd)
+	{
 		PullBlock temp;
 		if (isScope(cmd))
 		{
