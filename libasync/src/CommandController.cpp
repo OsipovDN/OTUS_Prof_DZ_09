@@ -30,7 +30,7 @@ namespace Controller
 			_statPull.emplace_back(str);
 
 		if (_statPull.size() == _statPull.capacity()) {
-			_msgQueue->notify(_statPull);
+			_msgQueue->putMsg(_statPull);
 			_statPull.clear();
 		}
 	}
