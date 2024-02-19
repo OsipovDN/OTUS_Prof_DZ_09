@@ -13,7 +13,7 @@ namespace async {
 		msgSender->attach(std::make_unique<ToFile>());
 		msgSender->attach(std::make_unique<ToCOut>());
 
-		return std::move(new Controller::CommandController(std::move(msgSender), bulk));
+		return new Controller::CommandController(std::move(msgSender), bulk);
 	}
 
 	void receive(handle_t handler, const char* data, std::size_t size) {

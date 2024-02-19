@@ -42,9 +42,10 @@ namespace Controller
 		obj.clear();
 	}
 
-	void CommandController::addCommand(std::string cmd)
+	void CommandController::addCommand(std::string& cmd)
 	{
 		PullBlock temp;
+		std::cout << cmd << std::endl;
 		if (isScope(cmd))
 		{
 			if (_statPull.size() != 0 && _isOpen)
@@ -59,15 +60,22 @@ namespace Controller
 				_dynamPull.clear();
 			}
 		}
-		if (_scopeBlockCount == 0 && _dynamPull.size() == 0)
-			addStatBlock(cmd);
 		else
-			temp.emplace_back(cmd);
-		if (_statPull.size() != 0)
 		{
-			_msgQueue->putMsg(_statPull);
-			_statPull.clear();
+			if (_scopeBlockCount == 0 && _dynamPull.size() == 0)
+				addStatBlock(cmd);
+			else
+				temp.emplace_back(cmd);
+		}
+		if (cmd == "EOF")
+		{
+			if (_statPull.size() != 0) 
+			{
+				_msgQueue->putMsg(_statPull);
+				_statPull.clear();
+			}
 		}
 
 	}
+
 }

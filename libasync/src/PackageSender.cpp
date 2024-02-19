@@ -28,7 +28,7 @@ namespace Sender {
 	{
 		for (const auto& it : massage)
 		{
-			std::cerr << it << std::endl;
+			std::cerr << it<<" ";
 		}
 		std::cerr << std::endl;
 		_queue.push(massage);

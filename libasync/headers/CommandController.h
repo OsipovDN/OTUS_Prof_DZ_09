@@ -33,7 +33,7 @@ namespace Controller
 
 		CommandController(std::unique_ptr<Sender::PackageSender> q,std::size_t count);
 		~CommandController() {};
-		void addCommand(std::string cmd);
+		void addCommand(std::string &s);
 
 	};
 }
