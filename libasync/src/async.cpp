@@ -1,6 +1,7 @@
 #include <sstream>
 #include <memory>
 #include <thread>
+
 #include <algorithm>
 
 #include "CommandController.h"
@@ -10,13 +11,16 @@
 
 namespace async {
 
+
 	handle_t connect(std::size_t bulk) {
+
 		static auto filePrinter = std::make_unique<ToFile>();
 		static auto COutPrinter = std::make_unique<ToCOut>();
 		static auto msgSender = std::make_shared<Sender::PackageSender>();
 		msgSender->attach(std::move(filePrinter),2);
 		msgSender->attach(std::move(COutPrinter),1);
-		return std::make_unique<Controller::CommandController>(msgSender, bulk).release();
+
+		return std::make_unique<Controller::CommandController>(std::move(msgSender), bulk).release();
 	}
 
 	void receive(handle_t handler, const char* data, std::size_t size) {
@@ -32,6 +36,7 @@ namespace async {
 		{
 			controller->addCommand(temp);
 		}
+		controller = nullptr;
 	}
 
 	void disconnect(handle_t handler) {
