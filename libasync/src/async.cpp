@@ -1,5 +1,6 @@
 #include <sstream>
 #include <memory>
+#include <algorithm>
 
 #include "CommandController.h"
 #include "Observers.h"
@@ -7,13 +8,15 @@
 
 namespace async {
 
+
 	handle_t connect(std::size_t bulk) {
 		auto msgSender=std::make_unique<Sender::PackageSender>();
 		msgSender->attach(std::make_unique<ToFile>());
 		msgSender->attach(std::make_unique<ToFile>());
 		msgSender->attach(std::make_unique<ToCOut>());
+		
 
-		return new Controller::CommandController(std::move(msgSender), bulk);
+		return std::make_unique<Controller::CommandController>(std::move(msgSender), bulk).release();
 	}
 
 	void receive(handle_t handler, const char* data, std::size_t size) {
@@ -28,10 +31,12 @@ namespace async {
 		while (stream >> temp)
 			controller->addCommand(temp);
 
+		controller = nullptr;
+
 	}
 
 	void disconnect(handle_t handler) {
-		receive(handler, "EOF", 1);
+		receive(std::move(handler), "EOF", 3);
 		if (handler != nullptr)
 		{
 			delete handler;

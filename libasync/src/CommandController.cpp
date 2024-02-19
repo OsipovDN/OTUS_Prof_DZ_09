@@ -39,13 +39,11 @@ namespace Controller
 	{
 		for (const auto& it : obj)
 			_dynamPull.emplace_back(it);
-		obj.clear();
 	}
 
 	void CommandController::addCommand(std::string& cmd)
 	{
-		PullBlock temp;
-		std::cout << cmd << std::endl;
+		//std::cout << cmd << std::endl;
 		if (isScope(cmd))
 		{
 			if (_statPull.size() != 0 && _isOpen)
@@ -55,19 +53,20 @@ namespace Controller
 			}
 			else if (_scopeBlockCount == 0 && !_isOpen)
 			{
-				addDynBlock(temp);
+				addDynBlock(_buf);
+				_buf.clear();
 				_msgQueue->putMsg(_dynamPull);
 				_dynamPull.clear();
 			}
 		}
-		else
+		else if (cmd != "EOF")
 		{
 			if (_scopeBlockCount == 0 && _dynamPull.size() == 0)
 				addStatBlock(cmd);
 			else
-				temp.emplace_back(cmd);
+				_buf.emplace_back(cmd);
 		}
-		if (cmd == "EOF")
+		else
 		{
 			if (_statPull.size() != 0) 
 			{
