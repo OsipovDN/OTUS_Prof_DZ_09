@@ -1,7 +1,7 @@
 #include <sstream>
 #include <memory>
 
-#include "ComandController.h"
+#include "CommandController.h"
 #include "Observers.h"
 #include "async.h"
 
@@ -13,13 +13,12 @@ namespace async {
 		msgSender->attach(std::make_unique<ToFile>());
 		msgSender->attach(std::make_unique<ToCOut>());
 
-
-		return std::move(new Controller::ComandController(std::move(msgSender), bulk));
+		return std::move(new Controller::CommandController(std::move(msgSender), bulk));
 	}
 
 	void receive(handle_t handler, const char* data, std::size_t size) {
 
-		auto controller = static_cast<Controller::ComandController*>(handler);
+		auto controller = static_cast<Controller::CommandController*>(handler);
 		if (handler == nullptr)
 			return;
 
