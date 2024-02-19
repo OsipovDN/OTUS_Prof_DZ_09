@@ -26,7 +26,7 @@ namespace async {
 		std::string temp;
 
 		while (stream >> temp)
-			controller->addComand(temp);
+			controller->addCommand(temp);
 
 	}
 
