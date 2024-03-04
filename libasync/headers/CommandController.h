@@ -7,6 +7,7 @@
 #include <algorithm>
 
 #include <IObserver.h>
+#include <IController.h>
 #include <PackageSender.h>
 
 using PullBlock = std::vector<std::string>;
@@ -15,7 +16,7 @@ class PackageSender;
 
 namespace Controller
 {
-	class CommandController {
+	class CommandController: public IController {
 	private:
 		std::unique_ptr<Sender::PackageSender> _msgQueue;
 
@@ -34,7 +35,7 @@ namespace Controller
 
 		CommandController(std::unique_ptr<Sender::PackageSender> q,std::size_t count);
 		~CommandController() {};
-		void addCommand(std::string &s);
+		void addCommand(std::string &s) override;
 
 	};
 }

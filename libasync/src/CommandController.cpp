@@ -31,6 +31,7 @@ namespace Controller
 
 		if (_statPull.size() == _statPull.capacity()) {
 			_msgQueue->putMsg(_statPull);
+			_msgQueue->send();
 			_statPull.clear();
 		}
 	}
@@ -49,6 +50,7 @@ namespace Controller
 			if (_statPull.size() != 0 && _isOpen)
 			{
 				_msgQueue->putMsg(_statPull);
+				_msgQueue->send();
 				_statPull.clear();
 			}
 			else if (_scopeBlockCount == 0 && !_isOpen)
@@ -56,6 +58,7 @@ namespace Controller
 				addDynBlock(_buf);
 				_buf.clear();
 				_msgQueue->putMsg(_dynamPull);
+				_msgQueue->send();
 				_dynamPull.clear();
 			}
 		}
@@ -71,6 +74,7 @@ namespace Controller
 			if (_statPull.size() != 0) 
 			{
 				_msgQueue->putMsg(_statPull);
+				_msgQueue->send();
 				_statPull.clear();
 			}
 		}

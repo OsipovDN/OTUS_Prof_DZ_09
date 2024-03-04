@@ -39,17 +39,6 @@ namespace Sender {
 		_queue.push(massage);
 	}
 
-	std::vector <std::string> PackageSender::getMsg()
-	{
-		if (_queue.empty())
-		{
-			std::cerr << "Container is empty" << std::endl;
-			return std::vector<std::string>();
-		}
-		return _queue.front();
-
-	}
-
 	void PackageSender::send()
 	{
 		while (!_queue.empty())

@@ -30,7 +30,6 @@ namespace Sender {
 
 		void putMsg(std::vector <std::string>& massage);
 		void send();
-		std::vector <std::string> getMsg();
 
 	};
 }
