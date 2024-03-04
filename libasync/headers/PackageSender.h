@@ -44,6 +44,5 @@ namespace Sender {
 		std::vector <std::string>& front() override;
 		void wait() override;
 		//IQueue
-
 	};
 }
