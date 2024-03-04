@@ -9,7 +9,7 @@ namespace Sender {
 	}
 	void PackageSender::detach(std::unique_ptr<IObserver> obj)
 	{
-		auto it=std::find(_observers.cbegin(), _observers.cend(), obj);
+		auto it = std::find(_observers.cbegin(), _observers.cend(), obj);
 		if (it != _observers.cend())
 		{
 			_observers.erase(std::find(_observers.cbegin(), _observers.cend(), obj));
@@ -29,14 +29,36 @@ namespace Sender {
 	}
 
 
-	void PackageSender::putMsg(std::vector <std::string>& massage)
+	void PackageSender::push(std::vector <std::string>& massage)
 	{
-		for (const auto& it : massage)
-		{
-			std::cerr << it<<" ";
-		}
-		std::cerr << std::endl;
+		std::unique_lock<std::mutex> lg(_mut);
 		_queue.push(massage);
-		notify();
+
+		lg.unlock();
+		if (_queue.empty())
+		{
+			_condition.notify_all();
+		}
+	}
+
+	std::vector <std::string>& PackageSender::front()
+	{
+		std::unique_lock<std::mutex> lg(_mut);
+		return _queue.front();
+	}
+
+	void PackageSender::pop()
+	{
+		std::unique_lock<std::mutex> lg(_mut);
+		_queue.pop();
+	}
+
+	void PackageSender::wait()
+	{
+		std::unique_lock<std::mutex> lg(_mut);
+		while (_queue.empty())
+		{
+			_condition.wait(lg);
+		}
 	}
 }

@@ -10,13 +10,8 @@ namespace async {
 
 
 	handle_t connect(std::size_t bulk) {
-		auto msgSender=std::make_unique<Sender::PackageSender>();
-		msgSender->attach(std::make_unique<ToFile>());
-		msgSender->attach(std::make_unique<ToFile>());
-		msgSender->attach(std::make_unique<ToCOut>());
-		
-
-		return std::make_unique<Controller::CommandController>(std::move(msgSender), bulk).release();
+		static auto msgSender=std::make_shared<Sender::PackageSender>(2,1);
+		return std::make_unique<Controller::CommandController>(msgSender, bulk).release();
 	}
 
 	void receive(handle_t handler, const char* data, std::size_t size) {

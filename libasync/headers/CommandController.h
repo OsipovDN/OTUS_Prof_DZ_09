@@ -7,6 +7,7 @@
 #include <algorithm>
 
 #include <IObserver.h>
+//#include <IPublisher.h>
 #include <IController.h>
 #include <PackageSender.h>
 
@@ -18,7 +19,7 @@ namespace Controller
 {
 	class CommandController: public IController {
 	private:
-		std::unique_ptr<Sender::PackageSender> _msgQueue;
+		std::shared_ptr <Sender::PackageSender> _msgQueue;
 
 		PullBlock _statPull;
 		PullBlock _dynamPull;
@@ -33,7 +34,7 @@ namespace Controller
 
 	public:
 
-		CommandController(std::unique_ptr<Sender::PackageSender> q,std::size_t count);
+		CommandController(std::shared_ptr<Sender::PackageSender> q,std::size_t count);
 		~CommandController() {};
 		void addCommand(std::string &s) override;
 

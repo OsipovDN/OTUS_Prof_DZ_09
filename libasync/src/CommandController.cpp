@@ -2,9 +2,9 @@
 
 namespace Controller
 {
-	CommandController::CommandController(std::unique_ptr<Sender::PackageSender> q, std::size_t count) :_scopeBlockCount(0), _isOpen(false)
+	CommandController::CommandController(std::shared_ptr<Sender::PackageSender> q, std::size_t count) :_scopeBlockCount(0), _isOpen(false)
 	{
-		_msgQueue = std::move(q);
+		_msgQueue = q;
 		_statPull.reserve(count);
 	}
 
@@ -30,7 +30,7 @@ namespace Controller
 			_statPull.emplace_back(str);
 
 		if (_statPull.size() == _statPull.capacity()) {
-			_msgQueue->putMsg(_statPull);
+			_msgQueue->push(_statPull);
 			_statPull.clear();
 		}
 	}
@@ -48,14 +48,14 @@ namespace Controller
 		{
 			if (_statPull.size() != 0 && _isOpen)
 			{
-				_msgQueue->putMsg(_statPull);
+				_msgQueue->push(_statPull);
 				_statPull.clear();
 			}
 			else if (_scopeBlockCount == 0 && !_isOpen)
 			{
 				addDynBlock(_buf);
 				_buf.clear();
-				_msgQueue->putMsg(_dynamPull);
+				_msgQueue->push(_dynamPull);
 				_dynamPull.clear();
 			}
 		}
@@ -68,9 +68,9 @@ namespace Controller
 		}
 		else
 		{
-			if (_statPull.size() != 0) 
+			if (_statPull.size() != 0)
 			{
-				_msgQueue->putMsg(_statPull);
+				_msgQueue->push(_statPull);
 				_statPull.clear();
 			}
 		}
