@@ -3,6 +3,7 @@
 #include <iostream>
 #include <list>
 #include <queue>
+#include <algorithm>
 
 #include <IPublisher.h>
 #include <IObserver.h>
@@ -28,6 +29,7 @@ namespace Sender {
 		//IPublisher
 
 		void putMsg(std::vector <std::string>& massage);
+		void send();
 		std::vector <std::string> getMsg();
 
 	};

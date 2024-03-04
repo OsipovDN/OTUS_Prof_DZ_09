@@ -9,7 +9,11 @@ namespace Sender {
 	}
 	void PackageSender::detach(std::unique_ptr<IObserver> obj)
 	{
-		_observers.remove(obj);
+		auto it=std::find(_observers.cbegin(), _observers.cend(), obj);
+		if (it != _observers.cend())
+		{
+			_observers.erase(std::find(_observers.cbegin(), _observers.cend(), obj));
+		}
 	}
 
 	void PackageSender::detachAll()
@@ -20,7 +24,8 @@ namespace Sender {
 	void PackageSender::notify(std::vector<std::string>& block)
 	{
 		for (auto& object : _observers)
-			object->update(block);
+			if (object->update(block))
+				continue;
 	}
 
 
@@ -42,6 +47,16 @@ namespace Sender {
 			return std::vector<std::string>();
 		}
 		return _queue.front();
+
+	}
+
+	void PackageSender::send()
+	{
+		while (!_queue.empty())
+		{
+			notify(_queue.front());
+			_queue.pop();
+		}
 
 	}
 }

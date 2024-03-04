@@ -4,15 +4,17 @@
 
 class ToFile :public IObserver {
 private:
+	bool _isBusy = false;
 	std::string getNameFile();
 	void printToStream(std::ofstream& stream, std::vector<std::string>& block);
 public:
-	void update(std::vector<std::string>& block) override;
+	bool update(std::vector<std::string>& block) override;
 };
 
 class ToCOut :public IObserver {
 private:
+	bool _isBusy = false;
 	void printToStream(std::vector<std::string>& block);
 public:
-	void update(std::vector<std::string>& block) override;
+	bool update(std::vector<std::string>& block) override;
 };

@@ -27,7 +27,6 @@ namespace async {
 
 		while (stream >> temp)
 			controller->addCommand(temp);
-
 	}
 
 	void disconnect(handle_t handler) {
