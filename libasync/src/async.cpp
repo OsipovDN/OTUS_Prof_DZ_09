@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "CommandController.h"
+#include "PackageSender.h"
 #include "Observers.h"
 #include "async.h"
 

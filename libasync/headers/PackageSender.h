@@ -7,14 +7,12 @@
 #include <condition_variable>
 #include <algorithm>
 
-#include <IPublisher.h>
-#include <IObserver.h>
 #include <Observers.h>
+#include <IQueue.h>
 
 namespace Sender {
 
-
-	class PackageSender :public IPublisher
+	class PackageSender :public IQueue
 	{
 	private:
 		//Очередь сообщений для печати
@@ -24,12 +22,12 @@ namespace Sender {
 
 		std::condition_variable _condition;
 		std::mutex _mut;
-		
+
 
 	public:
-		PackageSender(int coutThrCount, int fileThrCount) 
+		PackageSender(int coutThrCount, int fileThrCount)
 		{
-			for (auto i=0;i< coutThrCount;++i)
+			for (auto i = 0; i < coutThrCount; ++i)
 			{
 				attach(std::make_unique<ToCOut>());
 			}
@@ -37,7 +35,7 @@ namespace Sender {
 			{
 				attach(std::make_unique<ToFile>());
 			}
-			
+
 		}
 		~PackageSender() {};
 
@@ -48,10 +46,12 @@ namespace Sender {
 		void notify(std::vector<std::string>& block) override;
 		//IPublisher
 
-		void push(std::vector <std::string>& massage);
-		void pop();
-		std::vector <std::string>& front();
-		void wait();
+		//IQueue
+		void push(std::vector <std::string>& massage) override;
+		void pop() override;
+		std::vector <std::string>& front() override;
+		void wait() override;
+		//IQueue
 
 	};
 }

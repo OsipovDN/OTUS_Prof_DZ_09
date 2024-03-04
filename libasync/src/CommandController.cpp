@@ -2,7 +2,7 @@
 
 namespace Controller
 {
-	CommandController::CommandController(std::shared_ptr<Sender::PackageSender> q, std::size_t count) :_scopeBlockCount(0), _isOpen(false)
+	CommandController::CommandController(std::shared_ptr<IQueue> q, std::size_t count) :_scopeBlockCount(0), _isOpen(false)
 	{
 		_msgQueue = q;
 		_statPull.reserve(count);
