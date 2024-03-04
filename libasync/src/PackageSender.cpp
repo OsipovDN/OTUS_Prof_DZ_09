@@ -24,7 +24,7 @@ namespace Sender {
 	void PackageSender::notify(std::vector<std::string>& block)
 	{
 		for (auto& object : _observers)
-			if (object->update(block))
+			if (!object->update(block))
 				continue;
 	}
 
@@ -37,15 +37,6 @@ namespace Sender {
 		}
 		std::cerr << std::endl;
 		_queue.push(massage);
-	}
-
-	void PackageSender::send()
-	{
-		while (!_queue.empty())
-		{
-			notify(_queue.front());
-			_queue.pop();
-		}
-
+		notify();
 	}
 }

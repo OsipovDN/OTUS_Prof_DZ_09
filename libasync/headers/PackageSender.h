@@ -29,7 +29,5 @@ namespace Sender {
 		//IPublisher
 
 		void putMsg(std::vector <std::string>& massage);
-		void send();
-
 	};
 }
