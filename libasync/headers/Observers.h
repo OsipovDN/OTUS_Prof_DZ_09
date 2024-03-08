@@ -1,29 +1,20 @@
 #pragma once
-#include <string>
-#include <vector>
-#include <iostream>
-#include <memory>
-#include <algorithm>
-#include <chrono>
-#include <fstream>
 
-#include "IObserver.h"
-
-
+#include <IObserver.h>
 
 class ToFile :public IObserver {
 private:
+	bool _isBusy = false;
 	std::string getNameFile();
 	void printToStream(std::ofstream& stream, std::vector<std::string>& block);
 public:
-	void update(std::vector<std::string>& block) override;
-	~ToFile() {};
+	bool update(std::vector<std::string>& block) override;
 };
 
 class ToCOut :public IObserver {
 private:
+	bool _isBusy = false;
 	void printToStream(std::vector<std::string>& block);
 public:
-	void update(std::vector<std::string>& block) override;
-	~ToCOut() {};
+	bool update(std::vector<std::string>& block) override;
 };

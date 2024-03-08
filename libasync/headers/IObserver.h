@@ -2,8 +2,8 @@
 
 class IObserver {
 public:
-	virtual void update(std::vector<std::string>& obj) = 0;
-	virtual ~IObserver() {};
+	virtual bool update(std::vector<std::string>& obj) = 0;
+	virtual ~IObserver()=default;
 };
 
 

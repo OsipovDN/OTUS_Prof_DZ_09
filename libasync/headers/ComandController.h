@@ -3,20 +3,24 @@
 #include <list>
 #include <string>
 #include <vector>
-#include <memory>
 #include <algorithm>
 
-#include "IObserver.h"
-#include "ISubject.h"
+#include <IObserver.h>
+#include <PackageSender.h>
 
 using PullBlock = std::vector<std::string>;
 
-namespace libComand
+class PackageSender;
+
+namespace Controller
 {
-	class ComandController : public ISubject {
+	class ComandController {
 	private:
+		std::unique_ptr<Sender::PackageSender> _msgQueue;
+
 		PullBlock st_pl_cmd;
 		PullBlock dn_pl_cmd;
+		PullBlock _buf;
 		size_t scope_block;
 		bool is_open;
 		std::list<std::unique_ptr<IObserver>> _observers;
@@ -26,23 +30,10 @@ namespace libComand
 		void addDynBlock(PullBlock& obj);
 
 	public:
-		//ISubject
-		void attach(std::unique_ptr<IObserver> obj) override;
-		void detach(std::unique_ptr<IObserver> obj) override;
-		void detachAll() override;
-		void notify(std::vector<std::string>& block) override;
-		//ISubject
 
-		explicit ComandController(std::size_t count);
+		ComandController(std::unique_ptr<Sender::PackageSender> q,std::size_t count);
 		~ComandController() {};
 		void addComand(std::string cmd);
-
-
-
-
-
-
-
 
 	};
 }
