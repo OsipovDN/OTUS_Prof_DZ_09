@@ -15,10 +15,10 @@ namespace async {
 		static auto filePrinter = std::make_unique<ToFile>();
 		static auto COutPrinter = std::make_unique<ToCOut>();
 		static auto msgSender = std::make_shared<Sender::PackageSender>();
-		msgSender->attach(std::move(filePrinter),2);
-		msgSender->attach(std::move(COutPrinter),1);
+		msgSender->attach(std::move(filePrinter), 2);
+		msgSender->attach(std::move(COutPrinter), 1);
 
-		return std::make_unique<Controller::CommandController>(std::move(msgSender), bulk).release();
+		return std::make_unique<Controller::CommandController>(msgSender, bulk).release();
 	}
 
 	void receive(handle_t handler, const char* data, std::size_t size) {
