@@ -15,7 +15,7 @@ namespace Sender {
 
 	void PackageSender::attach(std::unique_ptr<IObserver> obj, size_t count)
 	{
-		for (auto i = 0; i < count; ++i)
+		for (size_t i = 0; i < count; ++i)
 		{
 			if (std::find(_observers.cbegin(), _observers.cend(), obj) == _observers.cend())
 				_observers.emplace_back(obj.release());
