@@ -25,7 +25,6 @@ namespace Controller
 		PullBlock _buf;
 		size_t _scopeBlockCount;
 		bool _isOpen;
-		std::list<std::unique_ptr<IObserver>> _observers;
 
 		bool isScope(const std::string& str);
 		void addStatBlock(const std::string& str);

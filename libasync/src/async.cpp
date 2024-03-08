@@ -12,12 +12,10 @@ namespace async {
 
 	handle_t connect(std::size_t bulk) {
 		static auto filePrinter = std::make_unique<ToFile>();
-		static auto COutPrinter1 = std::make_unique<ToCOut>();
-		static auto COutPrinter2 = std::make_unique<ToCOut>();
+		static auto COutPrinter = std::make_unique<ToCOut>();
 		static auto msgSender = std::make_shared<Sender::PackageSender>();
-		msgSender->attach(std::move(filePrinter));
-		msgSender->attach(std::move(COutPrinter1));
-		msgSender->attach(std::move(COutPrinter2));
+		msgSender->attach(std::move(filePrinter),2);
+		msgSender->attach(std::move(COutPrinter),1);
 		return std::make_unique<Controller::CommandController>(msgSender, bulk).release();
 	}
 

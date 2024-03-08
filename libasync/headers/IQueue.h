@@ -5,7 +5,7 @@ class IQueue : public IPublisher
 {
 public:
 	//IPublisher
-	void attach(std::unique_ptr<IObserver> obj) override = 0;
+	void attach(std::unique_ptr<IObserver> obj, size_t count) override = 0;
 	void detach(std::unique_ptr<IObserver> obj) override = 0;
 	void detachAll() override = 0;
 	void notify(std::vector<std::string>& block) override = 0;

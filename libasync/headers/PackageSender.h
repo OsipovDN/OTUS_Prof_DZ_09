@@ -16,13 +16,14 @@ namespace Sender {
 	{
 	private:
 		//Очередь сообщений для печати
-		std::queue<std::vector <std::string>>  _queue;
+		std::queue<std::vector <std::string>> _queue;
 		//Различные принтеры для вывода сообщений
-		std::list<std::unique_ptr<IObserver>> _observers;
+		std::vector<std::unique_ptr<IObserver>> _observers;
 
 		std::condition_variable _condition;
 		std::mutex _mut;
 
+		void printQueue();
 
 	public:
 		PackageSender()=default;
@@ -31,7 +32,7 @@ namespace Sender {
 		~PackageSender()=default;
 
 		//IPublisher
-		void attach(std::unique_ptr<IObserver> obj) override;
+		void attach(std::unique_ptr<IObserver> obj,size_t count) override;
 		void detach(std::unique_ptr<IObserver> obj) override;
 		void detachAll() override;
 		void notify(std::vector<std::string>& block) override;
