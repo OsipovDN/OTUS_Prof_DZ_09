@@ -9,7 +9,6 @@ namespace Sender {
 			{
 				std::cout << i << " ";
 			}
-
 		}
 		std::cout << std::endl;
 	}
