@@ -41,7 +41,7 @@ namespace async {
 		receive(std::move(handler), "EOF", 3);
 		if (handler != nullptr)
 		{
-			delete handler;
+			//delete handler;
 		}
 	}
 
