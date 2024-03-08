@@ -79,13 +79,4 @@ namespace Sender {
 		}
 	}
 
-	void PackageSender::send()
-	{
-		while (!_queue.empty())
-		{
-			notify(_queue.front());
-			_queue.pop();
-		}
-
-	}
 }
