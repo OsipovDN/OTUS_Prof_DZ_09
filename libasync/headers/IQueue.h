@@ -16,5 +16,5 @@ public:
 	virtual void pop() = 0;
 	virtual  std::vector <std::string>& front() = 0;
 	virtual void wait() = 0;
-	~IQueue() {};
+	~IQueue()=default;
 };

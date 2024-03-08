@@ -25,19 +25,10 @@ namespace Sender {
 
 
 	public:
-		PackageSender(int coutThrCount, int fileThrCount)
-		{
-			for (auto i = 0; i < coutThrCount; ++i)
-			{
-				attach(std::make_unique<ToCOut>());
-			}
-			for (auto i = 0; i < fileThrCount; ++i)
-			{
-				attach(std::make_unique<ToFile>());
-			}
-
-		}
-		~PackageSender() {};
+		PackageSender()=default;
+		PackageSender(PackageSender&) = delete;
+		PackageSender operator =(PackageSender&) = delete;
+		~PackageSender()=default;
 
 		//IPublisher
 		void attach(std::unique_ptr<IObserver> obj) override;

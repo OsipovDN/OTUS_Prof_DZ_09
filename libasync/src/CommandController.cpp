@@ -43,7 +43,6 @@ namespace Controller
 
 	void CommandController::addCommand(std::string& cmd)
 	{
-		//std::cout << cmd << std::endl;
 		if (isScope(cmd))
 		{
 			if (_statPull.size() != 0 && _isOpen)
