@@ -13,13 +13,10 @@ namespace Sender {
 		std::cout << std::endl;
 	}
 
-	void PackageSender::attach(std::unique_ptr<IObserver> obj, size_t count)
+	void PackageSender::attach(std::unique_ptr<IObserver> obj)
 	{
-		for (size_t i = 0; i < count; ++i)
-		{
-			if (std::find(_observers.cbegin(), _observers.cend(), obj) == _observers.cend())
-				_observers.emplace_back(obj.release());
-		}
+		if (std::find(_observers.cbegin(), _observers.cend(), obj) == _observers.cend())
+			_observers.emplace_back(obj.release());
 	}
 	void PackageSender::detach(std::unique_ptr<IObserver> obj)
 	{
@@ -36,25 +33,17 @@ namespace Sender {
 			_observers.clear();
 	}
 
-	void PackageSender::notify(std::vector<std::string>& block)
-	{
-		for (auto& object : _observers)
-
-			if (object->update(block))
-				continue;
-	}
-
 	void PackageSender::push(std::vector <std::string>& massage)
 	{
 		std::unique_lock<std::mutex> lg(_mut);
 		_queue.push(massage);
 
 		lg.unlock();
-		if (_queue.empty())
+		if (!_queue.empty())
 		{
 			_condition.notify_all();
 		}
-		printQueue();
+		//printQueue();
 	}
 
 	std::vector <std::string>& PackageSender::front()
@@ -69,13 +58,14 @@ namespace Sender {
 		_queue.pop();
 	}
 
-	void PackageSender::wait()
+	std::vector <std::string> PackageSender::wait()
 	{
 		std::unique_lock<std::mutex> lg(_mut);
 		while (_queue.empty())
 		{
 			_condition.wait(lg);
 		}
+		return front();
 	}
 
 }

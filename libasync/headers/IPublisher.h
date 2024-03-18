@@ -7,9 +7,8 @@
 
 class IPublisher {
 public:
-	virtual void attach(std::unique_ptr<IObserver> obj, size_t count) = 0;
+	virtual void attach(std::unique_ptr<IObserver> obj) = 0;
 	virtual void detach(std::unique_ptr<IObserver> obj) = 0;
 	virtual void detachAll() = 0;
-	virtual void notify(std::vector<std::string> &block) = 0;
 	virtual ~IPublisher()=default;
 };

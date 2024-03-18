@@ -1,20 +1,49 @@
 #pragma once
 
 #include <IObserver.h>
+#include <IQueue.h>
+#include <vector>
+#include <thread>
+#include <string>
+#include <iostream>
+#include <memory>
+#include <algorithm>
+#include <chrono>
+#include <fstream>
+#include <sstream>
 
 class ToFile :public IObserver {
 private:
-	bool _isBusy = false;
+	std::weak_ptr<IQueue> _queue;
+	size_t _thr_count;
+	std::vector<std::thread> _thr;
+
 	std::string getNameFile();
-	void printToStream(std::ofstream& stream, std::vector<std::string>& block);
+	bool printToStream(std::ofstream& stream);
+
 public:
-	bool update(std::vector<std::string>& block) override;
+	ToFile(std::shared_ptr<IQueue> queue, size_t thr_count) :
+		_queue(queue),
+		_thr_count(thr_count)
+	{
+		_thr.reserve(2);
+	}
+	bool update() override;
 };
 
 class ToCOut :public IObserver {
 private:
-	bool _isBusy = false;
-	void printToStream(std::vector<std::string>& block);
+	std::weak_ptr<IQueue> _queue;
+	size_t _thr_count;
+	std::vector<std::thread> _thr;
+
+	bool printToStream();
 public:
-	bool update(std::vector<std::string>& block) override;
+	ToCOut(std::shared_ptr<IQueue> queue, size_t thr_count) :
+		_queue(queue), 
+		_thr_count(thr_count)
+	{
+		_thr.reserve(2);
+	}
+	bool update() override;
 };
