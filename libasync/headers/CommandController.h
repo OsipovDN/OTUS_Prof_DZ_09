@@ -6,7 +6,6 @@
 #include <memory>
 #include <algorithm>
 
-#include <IObserver.h>
 #include <IController.h>
 #include <IQueue.h>
 
@@ -34,7 +33,7 @@ namespace Controller
 
 		CommandController(std::shared_ptr<IQueue> q,std::size_t count);
 		~CommandController() {};
-		void addCommand(std::string &s) override;
+		virtual void addCommand(std::string &s) override;
 
 	};
 }
