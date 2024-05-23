@@ -15,11 +15,12 @@ namespace msg {
 	private:
 		//Очередь сообщений для печати
 		std::queue<Command> _queue;
+		bool _finish;
 
 		std::mutex _mut;
 
 	public:
-		MassageQueue() {};
+		MassageQueue() :_finish(false) {};
 		MassageQueue(MassageQueue&) = delete;
 		MassageQueue operator =(MassageQueue&) = delete;
 		~MassageQueue() = default;
@@ -29,6 +30,8 @@ namespace msg {
 		Command& front() override;
 		void pop() override;
 		bool empty() const override;
+		bool isFinish()const override { return _finish; };
+		void finish() override { _finish = true; };
 		//IQueue
 
 		void print(Command& c)const;

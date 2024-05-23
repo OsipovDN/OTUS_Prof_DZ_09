@@ -70,6 +70,7 @@ namespace Controller
 			if (_statPull.size() != 0)
 			{
 				_msgQueue->push(_statPull);
+				_msgQueue->finish();
 				_statPull.clear();
 			}
 		}

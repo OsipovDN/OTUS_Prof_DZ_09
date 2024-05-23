@@ -8,7 +8,7 @@ Printer::Printer(std::shared_ptr<IQueue> q, size_t thr_count) :
 	_workers.emplace_back(&Printer::printToCOut, this);
 	for (auto i = 0; i < thr_count; ++i)
 	{
-		_workers.emplace_back(&Printer::printToStream, this);
+		//_workers.emplace_back(&Printer::printToStream, this);
 	}
 }
 
@@ -30,7 +30,8 @@ std::string Printer::getNameFile()
 {
 	std::stringstream ss;
 	ss << std::this_thread::get_id();
-	std::string name = "bulk" + ss.str() + ".log";
+	std::time_t time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+	std::string name = "bulk" + ss.str() + std::to_string(time) + ".log";
 	return name;
 }
 
@@ -38,7 +39,15 @@ void Printer::printToStream()
 {
 	while (true)
 	{
-		
+		std::unique_lock<std::mutex> lock(_mut);
+		_conditionOutFile.wait(lock, [this]()->bool
+			{
+				return !_completeTasks.empty() || _quite;
+			});
+		if (_quite && _completeTasks.empty())
+		{
+			return;
+		}
 		std::string name = getNameFile();
 		std::ofstream file(name);
 		if (!file.is_open())
@@ -47,17 +56,7 @@ void Printer::printToStream()
 		}
 		else
 		{
-			std::unique_lock<std::mutex> lock(_mut);
-			_conditionOutFile.wait(lock, [this]()->bool
-				{
-					return !_completeTasks.empty() || _quite;
-				});
-			//std::this_thread::sleep_for(std::chrono::seconds(2));
-			if (_quite)
-			{
-				file.close();
-				return;
-			}
+
 			auto msg = _completeTasks.front();
 			_completeTasks.pop();
 			lock.unlock();
@@ -67,9 +66,8 @@ void Printer::printToStream()
 				file << str << ",";
 				});
 			file << *(msg.cend() - 1) << std::endl;
-			print(msg);
 			file.close();
-			
+
 		}
 		if (_quite)
 			return;
@@ -79,23 +77,20 @@ void Printer::printToStream()
 
 void Printer::printToCOut()
 {
-	while (true)
+	while (!_tasks->isFinish() && !_tasks->empty()&& !_quite)
 	{
-		if (!_tasks->empty())
-		{
-			auto cmd = _tasks->front();
-			_tasks->pop();
-			std::cout << "bulk: ";
-			std::for_each(cmd.cbegin(), cmd.cend() - 1, [](const std::string& str) {
-				std::cout << str << ",";
-				});
-			std::cout << *(cmd.cend() - 1) << std::endl;
-			_completeTasks.push(cmd);
-			_conditionOutFile.notify_all();
-		}
-		if (_quite)
-			return;
 
+		auto cmd = _tasks->front();
+		_tasks->pop();
+		_completeTasks.push(cmd);
+		_conditionOutFile.notify_one();
+		std::cout << "bulk: ";
+		std::for_each(cmd.cbegin(), cmd.cend() - 1, [](const std::string& str) {
+			std::cout << str << ",";
+			});
+		std::cout << *(cmd.cend() - 1) << std::endl;
+		if (_tasks->isFinish())
+			return;
 	}
 }
 void Printer::print(Command& c)const {
