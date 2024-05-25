@@ -6,7 +6,7 @@ Printer::Printer(std::shared_ptr<IQueue> q, size_t thr_count) :
 	_quite(false)
 {
 	_workers.emplace_back(&Printer::printToCOut, this);
-	for (auto i = 0; i < thr_count; ++i)
+	for (size_t i = 0; i < thr_count; ++i)
 	{
 		_workers.emplace_back(&Printer::printToStream, this);
 	}
