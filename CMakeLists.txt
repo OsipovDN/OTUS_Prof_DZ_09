@@ -45,7 +45,7 @@ target_link_libraries(
 
 target_include_directories(
     ${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/libasync/headers
+    ${CMAKE_CURRENT_SOURCE_DIR}/async/headers
 )
 
 target_link_libraries(
