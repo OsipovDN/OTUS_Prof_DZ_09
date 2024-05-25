@@ -3,7 +3,7 @@
 
 Printer::Printer(std::shared_ptr<IQueue> q, size_t thr_count) :
 	_tasks(q),
-	_quite({ false })
+	_quite(false)
 {
 	_workers.emplace_back(&Printer::printToCOut, this);
 	for (auto i = 0; i < thr_count; ++i)
@@ -67,7 +67,6 @@ void Printer::printToStream()
 				});
 			file << *(msg.cend() - 1) << std::endl;
 			file.close();
-
 		}
 	}
 }

@@ -36,10 +36,6 @@ namespace async {
 
 	void disconnect(handle_t handler) {
 		receive(std::move(handler), "EOF", 3);
-		if (handler != nullptr)
-		{
-			delete handler;
-		}
 	}
 
 }
