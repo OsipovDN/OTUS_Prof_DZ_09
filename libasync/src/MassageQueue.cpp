@@ -7,7 +7,6 @@ namespace msg {
 	{
 		std::unique_lock<std::mutex> lg(_mut);
 		_queue.push(massage);
-		//std::this_thread::sleep_for(std::chrono::seconds(2));
 		//print(massage);
 		lg.unlock();
 	}

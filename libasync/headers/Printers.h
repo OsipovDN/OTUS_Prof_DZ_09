@@ -22,6 +22,7 @@ private:
 	std::shared_ptr<IQueue> _tasks;
 	std::queue <Command> _completeTasks;
 
+
 	std::atomic<bool> _quite;
 	std::mutex _mut;
 	std::condition_variable _conditionOutFile;
