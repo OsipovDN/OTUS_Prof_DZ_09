@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.8)
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
-project (async VERSION ${PROJECT_VESRION})
+project (asynctest VERSION ${PROJECT_VESRION})
 
 add_subdirectory (async)
 
@@ -77,7 +77,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 
 endif()
 
-install(TARGETS async RUNTIME DESTINATION bin)
+install(TARGETS asynctest RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 
