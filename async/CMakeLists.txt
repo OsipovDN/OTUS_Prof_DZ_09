@@ -8,7 +8,7 @@ project (libasync VERSION ${PROJECT_VESRION})
 configure_file(version.h.in  ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
 add_library (${PROJECT_NAME} STATIC
-    src/async.cpp
+    src/libasync.cpp
     src/CommandController.cpp
     src/Printers.cpp
     src/MassageQueue.cpp
