@@ -4,19 +4,16 @@
 #include <algorithm>
 
 #include "CommandController.h"
-#include "PackageSender.h"
-#include "Observers.h"
+#include "MassageQueue.h"
+#include "Printers.h"
 #include "async.h"
 
 namespace async {
 
 	handle_t connect(std::size_t bulk) {
 
-		static auto msgSender = std::make_shared<Sender::PackageSender>();
-		static auto filePrinter = std::make_unique<ToFile>(msgSender,2);
-		static auto COutPrinter = std::make_unique<ToCOut>(msgSender,1);
-		msgSender->attach(std::move(filePrinter));
-		msgSender->attach(std::move(COutPrinter));
+		static auto msgSender = std::make_shared<msg::MassageQueue>();
+		static auto filePrinter = std::make_unique<Printer>(msgSender, 2);
 
 		return std::make_unique<Controller::CommandController>(msgSender, bulk).release();
 	}
@@ -41,7 +38,7 @@ namespace async {
 		receive(std::move(handler), "EOF", 3);
 		if (handler != nullptr)
 		{
-			//delete handler;
+			delete handler;
 		}
 	}
 

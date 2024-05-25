@@ -5,7 +5,7 @@ set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
 project (async VERSION ${PROJECT_VESRION})
 
-add_subdirectory (libasync)
+add_subdirectory (async)
 
 find_package(GTest)
 
@@ -45,7 +45,7 @@ target_link_libraries(
 
 target_include_directories(
     ${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/libasync/headers
+    ${CMAKE_CURRENT_SOURCE_DIR}/async/headers
 )
 
 target_link_libraries(
