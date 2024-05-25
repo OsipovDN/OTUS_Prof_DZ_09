@@ -5,7 +5,7 @@ set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
 project (async VERSION ${PROJECT_VESRION})
 
-add_subdirectory (libasync)
+add_subdirectory (async)
 
 find_package(GTest)
 
