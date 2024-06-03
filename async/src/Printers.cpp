@@ -84,7 +84,7 @@ void Printer::printToCOut()
 			std::cout << str << ",";
 			});
 		std::cout << *(cmd.cend() - 1) << std::endl;
-		if (_tasks->isFinish() && _tasks->empty() && _quite)
+		if (_tasks->isFinish() && _tasks->empty())
 			return;
 	}
 }
